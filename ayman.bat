@@ -1,1 +1,1 @@
-echo "bojour"
+echo "bojour ici logwire"
