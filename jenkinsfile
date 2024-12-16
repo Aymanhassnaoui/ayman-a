@@ -16,6 +16,7 @@ pipeline {
                 script {
                   
                     bat 'npx cypress run'
+                    archiveArtifacts artifacts: 'rapports/*', allowEmptyArchive: true
                 }
             }
         }
@@ -25,7 +26,7 @@ pipeline {
         always {
             script {
                
-                archiveArtifacts artifacts: 'rapports/*', allowEmptyArchive: true
+                echo 'fin'
             }
         }
     }
