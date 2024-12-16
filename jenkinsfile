@@ -7,6 +7,7 @@ pipeline {
                 script {
                    
                     bat 'npm install'
+
                     
                 }
             }
@@ -17,8 +18,17 @@ pipeline {
                 script {
                   
                     bat 'npx cypress run'
-                     bat 'dir'
+                     
                     
+                }
+            }
+        }
+
+        stage('Run Cypress Tests') {
+            steps {
+                script {
+                  
+                    bat 'node cucumber-report-generator.js' 
                 }
             }
         }
