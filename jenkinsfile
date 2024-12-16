@@ -39,7 +39,7 @@ pipeline {
             script {
                
                 echo 'fin'
-                archiveArtifacts artifacts: 'rapports/index.html', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'rapports/**/*', allowEmptyArchive: true
             }
         }
     }
