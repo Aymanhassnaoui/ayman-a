@@ -24,7 +24,7 @@ pipeline {
             }
         }
 
-        stage('Run Cypress Tests') {
+        stage('generer rapport ') {
             steps {
                 script {
                   
