@@ -18,7 +18,7 @@ pipeline {
                   
                     bat 'npx cypress run'
                      bat 'dir'
-                    archiveArtifacts artifacts: 'rapports/*', allowEmptyArchive: true
+                    
                 }
             }
         }
@@ -29,6 +29,7 @@ pipeline {
             script {
                
                 echo 'fin'
+                archiveArtifacts artifacts: 'rapports\index.html', allowEmptyArchive: true
             }
         }
     }
