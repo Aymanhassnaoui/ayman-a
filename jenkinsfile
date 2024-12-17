@@ -32,7 +32,7 @@ pipeline {
     always {
         cucumber buildStatus: 'UNSTABLE',
                 reportTitle: 'my repport',
-                fileIncludePattern: '**/cypress/cucumber-json/test.cucumber.json',  
+                 fileIncludePattern: '**/*cucumber.json',,  
                 sortingMethod: 'ALPHABETICAL',
                 trendsLimit: 100
     }
