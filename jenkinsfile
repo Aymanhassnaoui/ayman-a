@@ -29,22 +29,28 @@ pipeline {
 
         stage('generer rapport ') {
             steps {
-                script {
-                  
+                script { 
                     sh 'node cucumber-report-generator.js' 
-                     archiveArtifacts artifacts: 'rapports/**/*', allowEmptyArchive: true
                 }
             }
         }
     }
 
     post {
-        always {
-            script {
-               
-                echo 'fin'
-                
-            }
-        }
+    always {
+        cucumber buildStatus: 'UNSTABLE',
+                failedFeaturesNumber: 1,
+                failedScenariosNumber: 1,
+                skippedStepsNumber: 1,
+                failedStepsNumber: 1,
+                classifications: [
+                        [key: 'Commit', value: '<a href="${GERRIT_CHANGE_URL}">${GERRIT_PATCHSET_REVISION}</a>'],
+                        [key: 'Submitter', value: '${GERRIT_PATCHSET_UPLOADER_NAME}']
+                ],
+                reportTitle: 'my repport',
+                fileIncludePattern: '**/*cucumber-report.json',
+                sortingMethod: 'ALPHABETICAL',
+                trendsLimit: 100
     }
+}
 }
