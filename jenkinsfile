@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                    
-                    bat 'npm ci'
+                    sh 'npm ci'
 
                     
                 }
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                   
-                    bat 'npx cypress run'
+                    sh 'npx cypress run'
                      
                 }
             }
@@ -42,7 +42,7 @@ pipeline {
                         [key: 'Submitter', value: '${GERRIT_PATCHSET_UPLOADER_NAME}']
                 ],
                 reportTitle: 'my repport',
-                fileIncludePattern: '**/*cucumber.json',
+                fileIncludePattern: '**/*.cucumber.json',
                 sortingMethod: 'ALPHABETICAL',
                 trendsLimit: 100
     }
