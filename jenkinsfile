@@ -1,35 +1,29 @@
 pipeline {
-    agent {
-        docker {
-            image 'cypress/browsers'
-        }
-    }
+    agent any  // Déclarez un agent pour que le pipeline ait un nœud d'exécution
 
     stages {
         stage('Install Dependencies') {
             steps {
-                script {
-                   
+                node {
+                    // Installation des dépendances avec npm
                     sh 'npm ci'
-
-                    
                 }
             }
         }
 
         stage('Run Cypress Tests') {
             steps {
-                script {
-                  
+                node {
+                    // Lancer les tests Cypress
                     sh 'npx cypress run'
-                     
                 }
             }
         }
 
-        stage('generer rapport ') {
+        stage('Generate Cucumber Report') {
             steps {
-                script { 
+                node {
+                    // Exécution du script Node.js pour générer un rapport Cucumber
                     sh 'node cucumber-report-generator.js' 
                 }
             }
@@ -37,12 +31,21 @@ pipeline {
     }
 
     post {
-    always {
-        cucumber buildStatus: 'UNSTABLE',
-                reportTitle: 'my repport',
-                fileIncludePattern: '**/cypress/cucumber-json/test.cucumber.json',  
-                sortingMethod: 'ALPHABETICAL',
-                trendsLimit: 100
+        always {
+            // Publier le rapport Cucumber après l'exécution des tests
+            cucumber buildStatus: 'UNSTABLE',
+                    failedFeaturesNumber: 1,
+                    failedScenariosNumber: 1,
+                    skippedStepsNumber: 1,
+                    failedStepsNumber: 1,
+                    classifications: [
+                            [key: 'Commit', value: '<a href="${GERRIT_CHANGE_URL}">${GERRIT_PATCHSET_REVISION}</a>'],
+                            [key: 'Submitter', value: '${GERRIT_PATCHSET_UPLOADER_NAME}']
+                    ],
+                    reportTitle: 'Cucumber Test Report',  // Titre du rapport
+                    fileIncludePattern: '**/cypress/results/test.cucumber.json',  // Modèle de fichier JSON généré
+                    sortingMethod: 'ALPHABETICAL',  // Méthode de tri des résultats
+                    trendsLimit: 100  // Limite des résultats à afficher
+        }
     }
-}
 }
