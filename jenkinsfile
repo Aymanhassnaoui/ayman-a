@@ -10,7 +10,7 @@ pipeline {
             steps {
                 script {
                    
-                    sh 'npm ci'
+                    bat 'npm ci'
 
                     
                 }
@@ -21,7 +21,7 @@ pipeline {
             steps {
                 script {
                   
-                    sh 'npx cypress run'
+                    bat 'npx cypress run'
                      
                 }
             }
