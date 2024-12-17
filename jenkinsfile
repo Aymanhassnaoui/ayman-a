@@ -1,5 +1,9 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'cypress/browsers'
+        }
+    }
 
     stages {
         stage('Install Dependencies') {
@@ -19,7 +23,6 @@ pipeline {
                   
                     bat 'npx cypress run'
                      
-                    
                 }
             }
         }
