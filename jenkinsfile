@@ -1,11 +1,6 @@
 pipeline {
-    agent {
-        docker {
-            image 'cypress/browsers' 
-        }
-    }
 
-       parameters {
+           parameters {
         choice(
             name: 'TAG', 
             choices: ['regression', 'positif', 'negatif',],
@@ -13,6 +8,11 @@ pipeline {
         )
     }
 
+    agent {
+        docker {
+            image 'cypress/browsers' 
+        }
+    }
     stages {
         stage('Install dependencies') {
             steps {
