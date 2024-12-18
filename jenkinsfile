@@ -3,6 +3,7 @@ pipeline {
         docker {
             image 'cypress/browser' 
         }
+        }
 
     stages {
         stage('Install dependencies') {
@@ -35,4 +36,4 @@ pipeline {
                 trendsLimit: 100
         }
     }
-} }
+} 
