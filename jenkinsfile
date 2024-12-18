@@ -1,18 +1,20 @@
 pipeline {
 
-           parameters {
-        choice(
-            name: 'TAG', 
-            choices: ['regression', 'positif', 'negatif',],
-            description: 'Sélectionnez les tags d\'environnement pour les tests Cypress'
-        )
-    }
-
+          
     agent {
         docker {
             image 'cypress/browsers' 
         }
     }
+
+     parameters {
+        choice(
+            name: 'TAG', 
+            choices: ['@regression', '@positif', '@negatif',],
+            description: 'Sélectionnez les tags d\'environnement pour les tests Cypress'
+        )
+    }
+
     stages {
         stage('Install dependencies') {
             steps {
@@ -22,7 +24,7 @@ pipeline {
 
         stage('Run tout les Tests de regression') {
             steps {
-                sh "npx cypress run --env TAGS=@${params.TAGS}"
+                sh "npx cypress run --env TAGS=${params.TAGS}"
             }
         }
     }  
