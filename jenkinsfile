@@ -12,9 +12,15 @@ pipeline {
             }
         }
         
-        stage('Run Cypress Tests') {
+        // stage('Run Cypress Tests') {
+        //     steps {
+        //         sh "npm run cy:run"
+        //     }
+        // }
+
+         stage('Run tout les Tests de regression ') {
             steps {
-                sh "npm run cy:run"
+                sh "npx cypress run --env TAGS=@positif"
             }
         }
     }  
