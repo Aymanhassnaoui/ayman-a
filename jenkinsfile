@@ -35,4 +35,4 @@ pipeline {
                 trendsLimit: 100
         }
     }
-}
+} }
