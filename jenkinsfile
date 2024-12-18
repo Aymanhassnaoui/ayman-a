@@ -1,41 +1,40 @@
 pipeline {
-    agent {
-        docker {
-            image 'cypress/included:12.17.5' // Image Docker Cypress
-        }
-    }
+    agent any  
 
     stages {
         stage('Install dependencies') {
             steps {
-                sh 'npm ci' // Installer les dépendances
+                bat 'npm ci'
             }
         }
         
         stage('Run Cypress Tests') {
             steps {
-                sh 'npx cypress run --reporter json --reporter-options output=results/cucumber.json' // Générer le rapport JSON
+                bat "npm run cy:run"
             }
         }
     }  
 
-    post {
+     post {
         always {
-             // Fournit le contexte nécessaire pour le chemin des fichiers
-                cucumber buildStatus: 'UNSTABLE',
-                    failedFeaturesNumber: 1,
-                    failedScenariosNumber: 1,
-                    skippedStepsNumber: 1,
-                    failedStepsNumber: 1,
-                    classifications: [
-                        [key: 'Commit', value: '<a href="${GERRIT_CHANGE_URL}">${GERRIT_PATCHSET_REVISION}</a>'],
-                        [key: 'Submitter', value: '${GERRIT_PATCHSET_UPLOADER_NAME}']
-                    ],
-                    reportTitle: 'My report',
-                    fileIncludePattern: 'results/cucumber.json', // Assurez-vous que le chemin correspond
-                    sortingMethod: 'ALPHABETICAL',
-                    trendsLimit: 100
+            script {
+                if (getContext(hudson.FilePath)) {
+                    deleteDir() // Supprimer le répertoire de travail
+                }
             }
+            cucumber buildStatus: 'UNSTABLE',
+                failedFeaturesNumber: 1,
+                failedScenariosNumber: 1,
+                skippedStepsNumber: 1,
+                failedStepsNumber: 1,
+                classifications: [
+                    [key: 'Commit', value: '<a href="${GERRIT_CHANGE_URL}">${GERRIT_PATCHSET_REVISION}</a>'],
+                    [key: 'Submitter', value: '${GERRIT_PATCHSET_UPLOADER_NAME}']
+                ],
+                reportTitle: 'My report',
+                fileIncludePattern: 'results/cucumber.json', // Assurez-vous que le chemin correspond
+                sortingMethod: 'ALPHABETICAL',
+                trendsLimit: 100
         }
     }
-
+}
