@@ -1,16 +1,20 @@
 pipeline {
-    agent any  // Utilisation de n'importe quel agent disponible
+    agent {
+        docker {
+            image 'cypress/included:12.17.5' 
+        }
+    }
 
     stages {
         stage('Install dependencies') {
             steps {
-                bat 'npm ci'
+                sh 'npm ci' 
             }
         }
         
         stage('Run Cypress Tests') {
             steps {
-                bat "npm run cy:run"
+                sh 'npx cypress run'
             }
         }
     }  
