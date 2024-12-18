@@ -24,7 +24,7 @@ pipeline {
 
         stage('Run tout les Tests de regression') {
             steps {
-                sh "npx cypress run --env TAGS=${params.TAGS}"
+                sh "npx cypress run --env TAGS=${params.TAG}"
             }
         }
     }  
