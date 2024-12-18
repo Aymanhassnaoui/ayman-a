@@ -1,9 +1,17 @@
 pipeline {
-  agent {
+    agent {
         docker {
             image 'cypress/browsers' 
         }
-        }
+    }
+
+       parameters {
+        choice(
+            name: 'TAG', 
+            choices: ['regression', 'positif', 'negatif',],
+            description: 'Sélectionnez les tags d\'environnement pour les tests Cypress'
+        )
+    }
 
     stages {
         stage('Install dependencies') {
@@ -11,23 +19,17 @@ pipeline {
                 sh 'npm ci'
             }
         }
-        
-        // stage('Run Cypress Tests') {
-        //     steps {
-        //         sh "npm run cy:run"
-        //     }
-        // }
 
-         stage('Run tout les Tests de regression ') {
+        stage('Run tout les Tests de regression') {
             steps {
-                sh "npx cypress run --env TAGS=@positif"
+                sh "npx cypress run --env TAGS=@${params.TAGS}"
             }
         }
     }  
 
     post {
         always {
-            cucumber buildStatus: 'STABLE',
+            cucumber buildStatus: 'UNSTABLE',
                 failedFeaturesNumber: 1,
                 failedScenariosNumber: 1,
                 skippedStepsNumber: 1,
@@ -42,4 +44,4 @@ pipeline {
                 trendsLimit: 100
         }
     }
-} 
+}
